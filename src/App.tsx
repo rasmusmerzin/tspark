@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
+import Particle from './Particle';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+interface Physics {
+  posX: number;
+  posY: number;
+  velX: number;
+  velY: number;
+}
+
+
+const App: React.FC = () => {
+  const [children, setChildren] = React.useState<Physics[]>([]);
+
+  return <div
+    id="app"
+    onClick={e => {
+      setChildren(children.map(node => {
+        node.posX += node.velX;
+        node.posY += node.velY;
+        return node;
+      }));
+      console.log(children.length);
+      setChildren([...children, {
+        posX: e.clientX /window.innerHeight,
+        posY: (window.innerHeight -e.clientY) /window.innerHeight,
+        velX: 0,
+        velY: -.01
+      }]);
+    }}
+  >
+    {children.map((node, i) => <Particle
+      posX={node.posX}
+      posY={node.posY}
+      key={i}
+    />)}
+  </div>;
 }
 
 export default App;
