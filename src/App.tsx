@@ -17,12 +17,11 @@ const App: React.FC = () => {
   return <div
     id="app"
     onClick={e => {
-      setChildren(children.map(node => {
+      setTimeout(() => setChildren(val => val.map(node => {
         node.posX += node.velX;
         node.posY += node.velY;
         return node;
-      }));
-      console.log(children.length);
+      })));
       setChildren([...children, {
         posX: e.clientX /window.innerHeight,
         posY: (window.innerHeight -e.clientY) /window.innerHeight,
