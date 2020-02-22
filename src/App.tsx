@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
   const renderPhysics = () => setState(state => {
     const newState = {...state};
-    newState.children = newState.children.map(node => {
+    newState.children = state.children.map(node => {
       node.velY -= gravity;
       node.posX += node.velX;
       node.posY += node.velY;
