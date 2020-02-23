@@ -1,6 +1,7 @@
 .particle {
   position: absolute;
-  background: #000;
-  width: 5px;
-  height: 5px;
+  background: #fff;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
 }

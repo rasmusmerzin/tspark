@@ -3,9 +3,14 @@ import Particle from './Particle';
 import './App.css';
 
 
-const unit = .1;
+const unit = .05;
+const idleTimeout = 10000;                  // milliseconds
+const idleInterval = 5000;                  // milliseconds
+const inputRate = 10;                       // per second
 const renderRate = 60;                      // per second
 const gravity = 10 *unit /renderRate **2;   // per render^2
+const sparkCount = 3;
+const sparkForce = unit *.05;
 
 
 interface Physics {
@@ -21,8 +26,13 @@ interface State {
     x: number,
     y: number,
     on: boolean
-  }
+  },
+  lastUserSpark: number,
+  lastIdleSpark: number
 }
+
+
+const now = () => (new Date()).getTime();
 
 
 const App: React.FC = () => {
@@ -32,7 +42,9 @@ const App: React.FC = () => {
       x: 0,
       y: 0,
       on: false
-    }
+    },
+    lastUserSpark: now(),
+    lastIdleSpark: now()
   });
 
   const setMousePos = (x: number, y: number) => setState(state =>{
@@ -42,20 +54,39 @@ const App: React.FC = () => {
     return newState;
   });
 
-  const setMouseOn = (on: boolean) => setState(state =>{
+  const setMouseOn = (on: boolean, x?: number, y?: number) => setState(state =>{
     const newState = {...state};
     newState.mouse.on = on;
+    if (x !== undefined) newState.mouse.x = x;
+    if (y !== undefined) newState.mouse.y = y;
     return newState;
   });
 
   const createSpark = (force: boolean) => setState(state => {
     const newState = {...state};
-    if (state.mouse.on || force) newState.children.push({
-      posX: state.mouse.x /window.innerHeight,
-      posY: (window.innerHeight -state.mouse.y) /window.innerHeight,
-      velX: 0,
-      velY: 0
-    });
+    const spark = (x: number, y: number) => {
+      for (let i=0; i < sparkCount; i++) {
+        newState.children.push({
+          posX: x /window.innerHeight,
+          posY: (window.innerHeight -y) /window.innerHeight,
+          velX: (Math.random() -.5) *sparkForce,
+          velY: (Math.random() -.3) *sparkForce
+        });
+      }
+    };
+    if (state.mouse.on || force) {
+      newState.lastUserSpark = now();
+      spark(state.mouse.x, state.mouse.y);
+    } else if (
+      now() -state.lastUserSpark > idleTimeout &&
+      now() -state.lastIdleSpark > idleInterval
+    ) {
+      newState.lastIdleSpark = now();
+      spark(
+        window.innerWidth *.5,
+        window.innerHeight *.1
+      );
+    }
     return newState;
   });
 
@@ -76,20 +107,21 @@ const App: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    const ticker = setInterval(createSpark, 100);
+    const ticker = setInterval(createSpark, 1000 /inputRate);
     return () => clearInterval(ticker);
   }, []);
 
   return <div
     id="app"
     onMouseMove={e => setMousePos(e.clientX, e.clientY)}
-    onMouseDown={() => setMouseOn(true)}
-    onMouseUp={() => setMouseOn(false)}
+    onMouseDown={e => setMouseOn(true, e.clientX, e.clientY)}
+    onMouseUp={e => setMouseOn(false, e.clientX, e.clientY)}
     onClick={() => createSpark(true)}
   >
     {state.children.map((node, i) => <Particle
       posX={node.posX}
       posY={node.posY}
+      hue={-Math.abs(node.velY) *360 *66}
       key={i}
     />)}
   </div>;
