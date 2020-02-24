@@ -1,4 +1,4 @@
-Small physics demo written in TypeScript.
+Small physics demo written in TypeScript.  
 This project is live at [https://rasmusmerzin.github.io/tspark](https://rasmusmerzin.github.io/tspark).
 
 This project was created with [React](https://reactjs.org/).  
