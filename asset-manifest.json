@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/tspark/static/css/main.a5e5e3d2.chunk.css",
+    "main.css": "/tspark/static/css/main.85131328.chunk.css",
     "main.js": "/tspark/static/js/main.f65c7fb9.chunk.js",
     "main.js.map": "/tspark/static/js/main.f65c7fb9.chunk.js.map",
     "runtime-main.js": "/tspark/static/js/runtime-main.6b0a46fd.js",
@@ -8,15 +8,15 @@
     "static/js/2.17ce77e9.chunk.js": "/tspark/static/js/2.17ce77e9.chunk.js",
     "static/js/2.17ce77e9.chunk.js.map": "/tspark/static/js/2.17ce77e9.chunk.js.map",
     "index.html": "/tspark/index.html",
-    "precache-manifest.ea5d26949df813c2ec659d06782fd38f.js": "/tspark/precache-manifest.ea5d26949df813c2ec659d06782fd38f.js",
+    "precache-manifest.6f40bba555d2badd9a21a627cdd859b4.js": "/tspark/precache-manifest.6f40bba555d2badd9a21a627cdd859b4.js",
     "service-worker.js": "/tspark/service-worker.js",
-    "static/css/main.a5e5e3d2.chunk.css.map": "/tspark/static/css/main.a5e5e3d2.chunk.css.map",
+    "static/css/main.85131328.chunk.css.map": "/tspark/static/css/main.85131328.chunk.css.map",
     "static/js/2.17ce77e9.chunk.js.LICENSE.txt": "/tspark/static/js/2.17ce77e9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6b0a46fd.js",
     "static/js/2.17ce77e9.chunk.js",
-    "static/css/main.a5e5e3d2.chunk.css",
+    "static/css/main.85131328.chunk.css",
     "static/js/main.f65c7fb9.chunk.js"
   ]
 }

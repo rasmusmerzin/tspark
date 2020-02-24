@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/tspark/precache-manifest.ea5d26949df813c2ec659d06782fd38f.js"
+  "/tspark/precache-manifest.6f40bba555d2badd9a21a627cdd859b4.js"
 );
 
 self.addEventListener('message', (event) => {
