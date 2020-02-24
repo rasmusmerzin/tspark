@@ -115,7 +115,10 @@ const App: React.FC = () => {
     id="app"
     onMouseMove={e => setMousePos(e.clientX, e.clientY)}
     onMouseDown={e => setMouseOn(true, e.clientX, e.clientY)}
-    onMouseUp={e => setMouseOn(false, e.clientX, e.clientY)}
+    onMouseUp={() => setMouseOn(false)}
+    onTouchMove={e => setMousePos(e.touches[0].clientX, e.touches[0].clientY)}
+    onTouchStart={e => setMouseOn(true, e.touches[0].clientX, e.touches[0].clientY)}
+    onTouchEnd={() => setMouseOn(false)}
     onClick={() => createSpark(true)}
   >
     {state.children.map((node, i) => <Particle
