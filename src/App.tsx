@@ -124,7 +124,7 @@ const App: React.FC = () => {
     {state.children.map((node, i) => <Particle
       posX={node.posX}
       posY={node.posY}
-      hue={-Math.abs(node.velY) *360 *66}
+      hue={-Math.abs(node.velY) *360 *renderRate}
       key={i}
     />)}
   </div>;
