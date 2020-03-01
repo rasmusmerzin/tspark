@@ -6,27 +6,34 @@ import './App.css';
 const unit = .05;
 const idleTimeout = 10000;                  // milliseconds
 const idleInterval = 5000;                  // milliseconds
-const inputRate = 10;                       // per second
 const renderRate = 60;                      // per second
+const inputInterval = 4;                    // renders
 const gravity = 10 *unit /renderRate **2;   // per render^2
 const sparkCount = 3;
-const sparkForce = unit *.05;
+const sparkForce = unit *.03;
 
 
-interface Physics {
-  posX: number;
-  posY: number;
-  velX: number;
-  velY: number;
+interface Node {
+  posX: number,
+  posY: number,
+  velX: number,
+  velY: number,
+  key: string
+}
+
+interface Touch {
+  x: number,
+  y: number
 }
 
 interface State {
-  children: Physics[],
+  children: Node[],
   mouse: {
     x: number,
     y: number,
     on: boolean
   },
+  touch: Touch[],
   lastUserSpark: number,
   lastIdleSpark: number
 }
@@ -43,18 +50,23 @@ const App: React.FC = () => {
       y: 0,
       on: false
     },
+    touch: [],
     lastUserSpark: now(),
     lastIdleSpark: now()
   });
 
-  const setMousePos = (x: number, y: number) => setState(state =>{
+  const setTouch = (touch: Touch[]) => setState(state => {
+    return {...state, touch};
+  });
+
+  const setMousePos = (x: number, y: number) => setState(state => {
     const newState = {...state};
     newState.mouse.x = x;
     newState.mouse.y = y;
     return newState;
   });
 
-  const setMouseOn = (on: boolean, x?: number, y?: number) => setState(state =>{
+  const setMouseOn = (on: boolean, x?: number, y?: number) => setState(state => {
     const newState = {...state};
     newState.mouse.on = on;
     if (x !== undefined) newState.mouse.x = x;
@@ -62,21 +74,27 @@ const App: React.FC = () => {
     return newState;
   });
 
-  const createSpark = (force: boolean) => setState(state => {
+  const createSpark = (force?: boolean) => setState(state => {
     const newState = {...state};
-    const spark = (x: number, y: number) => {
+    const timeString = String(now());
+    const spark = (x: number, y: number, keyBody: string) => {
       for (let i=0; i < sparkCount; i++) {
         newState.children.push({
           posX: x /window.innerHeight,
           posY: (window.innerHeight -y) /window.innerHeight,
           velX: (Math.random() -.5) *sparkForce,
-          velY: (Math.random() -.3) *sparkForce
+          velY: (Math.random() -.3) *sparkForce,
+          key: keyBody +i
         });
       }
     };
-    if (state.mouse.on || force) {
+    if (state.mouse.on || state.touch.length > 0 || force) {
       newState.lastUserSpark = now();
-      spark(state.mouse.x, state.mouse.y);
+      for (const i in state.touch) {
+        const t = state.touch[i];
+        spark(t.x, t.y, timeString +String(i).padStart(2, '0'));
+      }
+      if (state.mouse.on) spark(state.mouse.x, state.mouse.y, timeString +String(state.touch.length).padStart(2, '0'));
     } else if (
       now() -state.lastUserSpark > idleTimeout &&
       now() -state.lastIdleSpark > idleInterval
@@ -84,13 +102,14 @@ const App: React.FC = () => {
       newState.lastIdleSpark = now();
       spark(
         window.innerWidth *.5,
-        window.innerHeight *.1
+        window.innerHeight *.1,
+        '00'
       );
     }
     return newState;
   });
 
-  const renderPhysics = () => setState(state => {
+  const renderNodes = () => setState(state => {
     const newState = {...state};
     newState.children = state.children.map(node => {
       node.velY -= gravity;
@@ -102,30 +121,44 @@ const App: React.FC = () => {
   });
 
   React.useEffect(() => {
-    const ticker = setInterval(renderPhysics, 1000 /renderRate);
-    return () => clearInterval(ticker);
-  }, []);
-
-  React.useEffect(() => {
-    const ticker = setInterval(createSpark, 1000 /inputRate);
+    let counter = 0;
+    const ticker = setInterval(() => {
+      renderNodes();
+      counter = (counter +1) %inputInterval;
+      if (counter === 0) createSpark();
+    }, 1000 /renderRate);
     return () => clearInterval(ticker);
   }, []);
 
   return <div
     id="app"
-    onMouseMove={e => setMousePos(e.clientX, e.clientY)}
     onMouseDown={e => setMouseOn(true, e.clientX, e.clientY)}
+    onMouseMove={e => setMousePos(e.clientX, e.clientY)}
     onMouseUp={() => setMouseOn(false)}
-    onTouchMove={e => setMousePos(e.touches[0].clientX, e.touches[0].clientY)}
-    onTouchStart={e => setMouseOn(true, e.touches[0].clientX, e.touches[0].clientY)}
-    onTouchEnd={() => setMouseOn(false)}
+    onTouchStart={e => {
+      const touch: Touch[] = [];
+      for (let i=0; i < e.touches.length; i++) {
+        const item = e.touches.item(i);
+        touch.push({ x: item.clientX, y: item.clientY });
+      }
+      setTouch(touch);
+    }}
+    onTouchMove={e => {
+      const touch: Touch[] = [];
+      for (let i=0; i < e.touches.length; i++) {
+        const item = e.touches.item(i);
+        touch.push({ x: item.clientX, y: item.clientY });
+      }
+      setTouch(touch);
+    }}
+    onTouchEnd={() => setTouch([])}
     onClick={() => createSpark(true)}
   >
     {state.children.map((node, i) => <Particle
+      key={node.key}
       posX={node.posX}
       posY={node.posY}
       hue={-Math.abs(node.velY) *360 *66}
-      key={i}
     />)}
   </div>;
 }
