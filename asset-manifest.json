@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/tspark/static/css/main.d4a516b3.chunk.css",
-    "main.js": "/tspark/static/js/main.57c8aaa5.chunk.js",
-    "main.js.map": "/tspark/static/js/main.57c8aaa5.chunk.js.map",
+    "main.css": "/tspark/static/css/main.4a627710.chunk.css",
+    "main.js": "/tspark/static/js/main.b9c1a62a.chunk.js",
+    "main.js.map": "/tspark/static/js/main.b9c1a62a.chunk.js.map",
     "runtime-main.js": "/tspark/static/js/runtime-main.6b0a46fd.js",
     "runtime-main.js.map": "/tspark/static/js/runtime-main.6b0a46fd.js.map",
     "static/js/2.17ce77e9.chunk.js": "/tspark/static/js/2.17ce77e9.chunk.js",
     "static/js/2.17ce77e9.chunk.js.map": "/tspark/static/js/2.17ce77e9.chunk.js.map",
     "index.html": "/tspark/index.html",
-    "precache-manifest.5fc627d5dea66ea7d9c9ad31402dac88.js": "/tspark/precache-manifest.5fc627d5dea66ea7d9c9ad31402dac88.js",
+    "precache-manifest.fd0a80e9f385c59fdc52fd50bde29a38.js": "/tspark/precache-manifest.fd0a80e9f385c59fdc52fd50bde29a38.js",
     "service-worker.js": "/tspark/service-worker.js",
-    "static/css/main.d4a516b3.chunk.css.map": "/tspark/static/css/main.d4a516b3.chunk.css.map",
+    "static/css/main.4a627710.chunk.css.map": "/tspark/static/css/main.4a627710.chunk.css.map",
     "static/js/2.17ce77e9.chunk.js.LICENSE.txt": "/tspark/static/js/2.17ce77e9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6b0a46fd.js",
     "static/js/2.17ce77e9.chunk.js",
-    "static/css/main.d4a516b3.chunk.css",
-    "static/js/main.57c8aaa5.chunk.js"
+    "static/css/main.4a627710.chunk.css",
+    "static/js/main.b9c1a62a.chunk.js"
   ]
 }
